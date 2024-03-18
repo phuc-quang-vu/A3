@@ -63,7 +63,7 @@ def deleteStudent(student_id):
 #-------------------------------------------------------------------------------
 # tester
 def main(): 
-    
+
     createTable()
 
     print("Student list:")
@@ -85,16 +85,22 @@ def main():
 
 #-------------------------------------------------------------------------------
 # Get connection to PostgreSQL to a database name A3_1
-conn = psycopg.connect(
-dbname = "A3_1", 
-user = "postgres", 
-password = "8023", 
-host = "localhost", 
-port = 5432
-)
+try:
+    conn = psycopg.connect(
+    dbname = "A3_1", 
+    user = "postgres", 
+    password = "8023", 
+    host = "localhost", 
+    port = 5432
+    )
 
-# Create cursor to process SQL command
-cur = conn.cursor() 
-main()
-conn.commit()
-conn.close()
+
+    # Create cursor to process SQL command
+    cur = conn.cursor() 
+    main()
+    conn.commit()
+    conn.close()
+
+except psycopg.OperationalError as e:
+    print (f" Error:{e}")
+    exit (1) 
