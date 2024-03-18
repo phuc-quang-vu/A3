@@ -1,17 +1,5 @@
 import psycopg
 
-# Get connection to PostgreSQL to a database name A3_1
-conn = psycopg.connect(
-dbname = "A3_1", 
-user = "postgres", 
-password = "8023", 
-host = "localhost", 
-port = 5432
-)
-
-# Create cursor to process SQL command
-cur = conn.cursor() 
-
 def createTable():
     # Drop students table if it already exists
     cur.execute('''
@@ -37,6 +25,7 @@ def createTable():
     ('Jim', 'Beam', 'jim.beam@example.com', '2023-09-02')
     ''')
 
+#-------------------------------------------------------------------------------
 # List all students in table
 def getAllStudent():
     cur.execute('''
@@ -47,18 +36,14 @@ def getAllStudent():
     for row in rows:
         print(f'{row[0]:3d} {row[1]:10s} {row[2]:10s} {row[3]:25s} {row[4]}') 
 
+#-------------------------------------------------------------------------------
 # Add new student to the end of table
 def addStudent(first_name, last_name, email, enrollment_date):
     cur.execute('''
     INSERT INTO students(first_name, last_name, email, enrollment_date)
     VALUES (%s, %s, %s, %s)''', (first_name, last_name, email, enrollment_date))
 
-def addStudent2(first_name, last_name, email, enrollment_date):
-    cur.execute(f'''
-    INSERT INTO students(first_name, last_name, email, enrollment_date)
-    VALUES ('{first_name}', '{last_name}', '{email}', '{enrollment_date}')
-    ''')
-
+#-------------------------------------------------------------------------------
 # Update student email by student_id
 def updateStudentEmail(student_id, new_email):
     cur.execute(f''' 
@@ -67,6 +52,7 @@ def updateStudentEmail(student_id, new_email):
     WHERE student_id = {student_id}
     ''')
 
+#-------------------------------------------------------------------------------
 # Delete student by student_id
 def deleteStudent(student_id):
     cur.execute(f''' 
@@ -74,6 +60,7 @@ def deleteStudent(student_id):
     WHERE student_id = {student_id}
     ''')
 
+#-------------------------------------------------------------------------------
 # tester
 def main(): 
     
@@ -96,7 +83,18 @@ def main():
 
     input("Press any key to close...")
 
+#-------------------------------------------------------------------------------
+# Get connection to PostgreSQL to a database name A3_1
+conn = psycopg.connect(
+dbname = "A3_1", 
+user = "postgres", 
+password = "8023", 
+host = "localhost", 
+port = 5432
+)
 
+# Create cursor to process SQL command
+cur = conn.cursor() 
 main()
 conn.commit()
 conn.close()
